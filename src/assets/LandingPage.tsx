@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import Button from '../components/button';
 import FeatureCard from '../components/featureCard';
 import { MessageCircle, Shield, Zap, Users, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const features = [
     {
       icon: Zap,
@@ -35,10 +37,10 @@ const LandingPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="rounded-lg">
+            <Button variant="ghost" className="rounded-lg" onClick={() => navigate('/auth')}>
               Sign in
             </Button>
-            <Button variant="primary" className="rounded-lg">
+            <Button variant="primary" onClick={() => navigate('/auth')} className="rounded-lg">
               Get Started
             </Button>
           </div>
@@ -77,7 +79,7 @@ const LandingPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button variant="primary" icon={ArrowRight} className="w-full sm:w-64 rounded-xl">
+              <Button variant="primary" onClick={() => navigate('/auth')} icon={ArrowRight} className="w-full sm:w-64 rounded-xl">
                 Start chatting
               </Button>
               <Button variant="outline" className="w-full sm:w-64 rounded-xl">
@@ -184,6 +186,7 @@ const LandingPage = () => {
           <Button 
             variant="primary" 
             icon={ArrowRight} 
+            onClick={() => navigate('/auth')}
             className="mx-auto px-10 rounded-xl"
           >
             Sign Up Now
