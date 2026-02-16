@@ -1,5 +1,5 @@
 import { API } from "../api/index" 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search, Send, UserCircle } from "lucide-react";
 
@@ -44,7 +44,8 @@ const ChatPage = () => {
         scrollRef.current?.scrollIntoView({behavior: "smooth"})
     }, [messages])
 
-    
+    const fileRef = useRef<HTMLInputElement | null>(null)
+
 
     useEffect(() => {
         // Fetch user from localStorage
@@ -159,6 +160,12 @@ const ChatPage = () => {
             console.log("Error occured", error);
         }
     };
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if(!file) return;
+        console.log("File submitted", file)
+    }
  
     return (
         <div className="flex h-screen bg-brand-dark text-white overflow-hidden">
@@ -247,9 +254,21 @@ const ChatPage = () => {
                     <div ref={scrollRef}/>
                 </div>
                 {/* Input Box and Button */}
-                <div className="p-4 border-t border-brand-border bg-brand-dark/30 flex items-center gap-3">
-                    <input type="file" name="upload-file" aria-hidden="true" className="hidden"/>
-                    <button type="button" aria-label="upload-file" className="p-2 rounded-full transition-colors hover:bg-brand-card">
+                <div className="p-4 border-t border-brand-border bg-brand-dark/30 flex items-center gap-3 cursor-pointer">
+                    <input 
+                        type="file" 
+                        name="upload-file" 
+                        aria-hidden="true" 
+                        className="hidden"
+                        ref={fileRef}
+                        onChange={handleFileChange}
+                    />
+                    <button 
+                        type="button" 
+                        aria-label="upload-file" 
+                        className="p-2 rounded-full transition-colors hover:bg-brand-card"
+                        onClick={() => fileRef.current?.click()}
+                    >
                         <Plus size={24} className=" text-primary"/>
                     </button>
                         
