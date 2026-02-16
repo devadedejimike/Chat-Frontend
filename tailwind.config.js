@@ -7,22 +7,60 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Semantic naming
         brand: {
-          dark: "#020617",    // slate-950
-          card: "#0f172a",    // slate-900
-          border: "#1e293b",  // slate-800
-          accent: "#3b82f6",  // blue-500
-          glow: "rgba(59, 130, 246, 0.1)",
+          // Background layers
+          dark: "#020617",     // main app background
+          base: "#020617",
+          card: "#0f172a",     // panels / sidebar
+
+          // Borders
+          border: "#1e293b",
+          softBorder: "#1e293b80",
+
+          // Text
+          text: "#e2e8f0",
+          muted: "#94a3b8",
+          subtle: "#64748b",
+
+          // Accent system
+          accent: "#3b82f6",
+          accentHover: "#2563eb",
+          accentSoft: "rgba(59,130,246,0.1)",
+
+          // Status colors
+          success: "#22c55e",
+          warning: "#f59e0b",
+          danger: "#ef4444",
         },
-        // You can also define a custom palette
+
         primary: "#3b82f6",
         secondary: "#6366f1",
         muted: "#94a3b8",
       },
+
       borderRadius: {
-        'auth': '1.5rem',
-      }
+        auth: "1.5rem",
+        xl2: "1rem",
+        chat: "0.75rem",
+      },
+
+      boxShadow: {
+        soft: "0 10px 25px rgba(0,0,0,0.2)",
+        glow: "0 0 0 1px rgba(59,130,246,0.2), 0 10px 30px rgba(59,130,246,0.15)",
+      },
+
+      spacing: {
+        18: "4.5rem",
+        22: "5.5rem",
+      },
+
+      fontSize: {
+        xs2: "0.7rem",
+      },
+
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
+      },
     },
   },
   plugins: [],
