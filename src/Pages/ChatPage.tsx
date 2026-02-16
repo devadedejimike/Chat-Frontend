@@ -1,5 +1,5 @@
 import { API } from "../api/index" 
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search, Send, UserCircle } from "lucide-react";
 
@@ -21,7 +21,8 @@ interface Chat{
 
 interface Message{
     _id: string;
-    text: string;
+    text?: string;
+    attachments?: string[],
     sender: User;
     chat: string;
     createdAt: string;
@@ -161,11 +162,75 @@ const ChatPage = () => {
         }
     };
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if(!file) return;
+        if(!file || !selectedChat) return;
         console.log("File submitted", file)
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("chatId", selectedChat._id)
+
+        try {
+            const { data } = await API.post("/message/send", formData, {headers : {"Content-Type": "multipart/form-data"}})
+
+            setMessages(prev => [...prev, data])
+            setChats(prev =>
+                prev.map(chat =>
+                    chat._id === data.chat._id
+                    ? { ...chat, latestMessage: data.message }
+                    : chat
+                )
+                );
+
+        } catch (error) {
+            console.error("File upload failed", error);
+        }
+
+
+
+
+
+
+
+
     }
+//     const handleFileChange = async (
+//   e: React.ChangeEvent<HTMLInputElement>
+// ) => {
+//   const file = e.target.files?.[0];
+//   if (!file || !selectedChat) return;
+
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   formData.append("chatId", selectedChat._id);
+
+//   try {
+//     const { data } = await API.post(
+//       "/message/send",
+//       formData,
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       }
+//     );
+
+//     setMessages(prev => [...prev, data.message]);
+
+//     setChats(prev =>
+//       prev.map(chat =>
+//         chat._id === data.chat._id
+//           ? { ...chat, latestMessage: data.message }
+//           : chat
+//       )
+//     );
+
+//   } catch (error) {
+//     console.error("File upload failed", error);
+//   }
+// };
+
  
     return (
         <div className="flex h-screen bg-brand-dark text-white overflow-hidden">
@@ -246,7 +311,21 @@ const ChatPage = () => {
                                 }`}>
                                     <p className="text-sm leading-snug">{m.text}</p>
                                     <p className="text-[10px] opacity-70 mt-1 text-right">{formattedTime}</p>
-                                    
+                                    {m.attachments && m.attachments.length > 0 && (
+                                        <div>
+                                            {m.attachments.map((url, index) => (
+                                                <a
+                                                    key={index}
+                                                    href={url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-400 underline text-sm block"
+                                                >
+                                                    veiw attachment
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 
                             </div>)
