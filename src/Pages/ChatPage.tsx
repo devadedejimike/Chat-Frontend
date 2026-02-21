@@ -195,7 +195,7 @@ const ChatPage = () => {
         try {
             const { data } = await API.post("/message/send", formData, {headers : {"Content-Type": "multipart/form-data"}})
 
-            setMessages(prev => [...prev, data])
+            setMessages(prev => [...prev, data.messages])
             setChats(prev =>
                 prev.map(chat =>
                     chat._id === data.chat._id
@@ -251,7 +251,7 @@ const ChatPage = () => {
                         <div key={chat._id} onClick={() => setSelectedChat(chat)} 
                             className={`px-4 py-3 cursor-pointer ${selectedChat?._id == chat._id ? "bg-primary/20" : "hover:bg-brand-card" }`}>
                             <h4 className="font-semibold">{getChatName(chat)}</h4>
-                            <p className="text-xs text-muted">{chat.latestMessage?.text || 'No message yet'}</p>
+                            <p className="text-xs text-muted">{chat.latestMessage?.text && chat.latestMessage.text.trim() !== "" ? chat.latestMessage.text : chat.latestMessage ? "🔗 Attachment" : 'No message yet'}</p>
                         </div>
                     ))}
                 </div>
@@ -345,6 +345,7 @@ const ChatPage = () => {
                         <input 
                             type="file" 
                             name="upload-file" 
+                            accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg"
                             aria-hidden="true" 
                             className="hidden"
                             ref={fileRef}
