@@ -5,6 +5,7 @@ interface Props {
   loggedInUser: User | null;
   selectedChat: Chat;
   scrollRef: React.RefObject<HTMLDivElement | null>;
+  searchMessage: string;
 }
 
 const MessageArea = ({
@@ -12,6 +13,7 @@ const MessageArea = ({
   loggedInUser,
   selectedChat,
   scrollRef,
+  searchMessage,
 }: Props) => {
   return (
     <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-brand-border space-y-2 p-4">
@@ -23,9 +25,19 @@ const MessageArea = ({
         minute: "2-digit",
         hour12: true
     })
+    const highlightText = (text: string) => {
+        if (!searchMessage.trim()) return text;
+        const regex = new RegExp(`(${searchMessage})`, "gi")
+        return text.replace(
+            regex,
+            `<span class="bg-yellow-400 text-black p-1 rounded">$1</span>`
+        )
+
+    }
         return (
         <div
             key={m._id}
+            id={m._id}
             className={`flex ${
                 isMe
                 ? "justify-end"
@@ -43,7 +55,12 @@ const MessageArea = ({
                     </p>
                 )}
 
-                    <p className="text-sm leading-snug hover:opacity-90 transition-opacity">{m.text}</p>
+                    <p 
+                        className="text-sm leading-snug hover:opacity-90 transition-opacity"
+                        dangerouslySetInnerHTML={{
+                            __html:highlightText(m.text || "")
+                        }}
+                    />
                     {m.attachments && m.attachments.length > 0 && (
                         <div className="mt-2 space-y-2">
                             {m.attachments.map((url, index) => {
