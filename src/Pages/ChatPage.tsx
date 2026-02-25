@@ -17,12 +17,9 @@ const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-
   const [searchUser, setSearchUser] = useState("");
   const [searchUserResult, setSearchUserResult] = useState<User[]>([]);
-
   const [searchMessage, setSearchMessage] = useState("");
-  const [searchMessageResult, setSearchMessageResult] = useState<Message[]>([]);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -187,16 +184,21 @@ const ChatPage = () => {
   // =========================
 
   const handleSearchMessages = () => {
-    if (!searchMessage.trim()) {
-      setSearchMessageResult([]);
+    const query = searchMessage.toLowerCase().trim();
+    if (!query) {
       return;
     }
 
-    const filtered = messages.filter((m) =>
-      m.text?.toLowerCase().includes(searchMessage.toLowerCase())
+    const findMatch = messages.find((m) =>
+      m.text?.toLowerCase().includes(query)
     );
-
-    setSearchMessageResult(filtered);
+    if (findMatch) {
+      const element = document.getElementById(findMatch._id);
+      element?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      })
+    }
   };
 
   // =========================
@@ -281,14 +283,11 @@ const ChatPage = () => {
             />
 
             <MessageArea
-              messages={
-                searchMessageResult.length > 0
-                  ? searchMessageResult
-                  : messages
-              }
+              messages={messages}
               loggedInUser={loggedInUser}
               selectedChat={selectedChat}
               scrollRef={scrollRef}
+              searchMessage={searchMessage}
             />
 
             <MessageInput
