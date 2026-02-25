@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, UserCircle, MoreVertical } from "lucide-react";
+import { UserCircle, MoreVertical } from "lucide-react";
 import MenuItem from "./MenuItem";
 
 interface Props {
@@ -61,9 +61,7 @@ const MessageHeader = ({
           <button
             className="absolute top-1/2 right-3 -translate-y-1/2 "
             onClick={handleSearchMessages}
-          >
-            <Search className="text-gray-400 hover:text-primary" />
-          </button>
+          />
         </div>  
       )}
 
