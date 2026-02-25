@@ -200,6 +200,36 @@ const ChatPage = () => {
   };
 
   // =========================
+  //  Update Profile Picture
+  // =========================
+
+  const updateDp = () => {}
+
+  // =========================
+  //  Create Group
+  // =========================
+
+  const createGroup = () => {}
+
+  // =========================
+  //  Add Member
+  // =========================
+
+  const addMember = () => {}
+
+  // =========================
+  //  Remove Member
+  // =========================
+
+  const removeMember = () => {} 
+
+  // =========================
+  // Edit Group Name
+  // =========================
+
+  const editGroupName = () => {}
+
+  // =========================
   // Logout
   // =========================
 
@@ -243,6 +273,11 @@ const ChatPage = () => {
               searchMessage={searchMessage}
               setSearchMessage={setSearchMessage}
               handleSearchMessages={handleSearchMessages}
+              updateDp={updateDp}
+              createGroup={createGroup}
+              addMember={addMember}
+              removeMember={removeMember}
+              editGroupName={editGroupName}
             />
 
             <MessageArea
