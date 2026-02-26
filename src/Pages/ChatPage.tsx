@@ -159,8 +159,8 @@ const ChatPage = () => {
   const handleSearchUser = async () => {
     if (!searchUser.trim()) return;
 
-    const { data } = await API.get(`/user?search=${searchUser}`);
-    setSearchUserResult(data);
+    const { data } = await API.get(`/chat/search?search=${searchUser}`);
+    setSearchUserResult(data.user || []);
   };
 
   const handleAccessChat = async (userId: string) => {
